@@ -31,7 +31,7 @@ Route::get('/obtener_id', [TestController::class, 'verPagina'])->name('pagina_pr
 
 Route::get('/productos', function () {
     //se obtienen todos los productos del modelo
-    $listadoProductos= Producto::orderBy('');
+    $listadoProductos= Producto::orderBy('precio','DESC')->get();
     
     return view('productos.index',compact('listadoProductos'));
 })->middleware(['auth'])->name('listado_productos');

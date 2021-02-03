@@ -32,7 +32,7 @@
                         <table class="table table-bordered table-hover table-sm">
                             <thead>
                                 <th>Nombre</th>
-                                <th>Precio</th>
+                                <th>Precio.....</th>
                             </thead>
                             <tbody>
                                 @foreach ($listadoProductos as $producto)
