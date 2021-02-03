@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.principal')
+@section('contenido')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>Document</title>
-</head>
-
-<body>
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -32,14 +24,27 @@
                         <table class="table table-bordered table-hover table-sm">
                             <thead>
                                 <th>Nombre</th>
-                                <th>Precio--</th>
+                                <th>Precio</th>
+                                <th>Acciones</th>
                             </thead>
                             <tbody>
                                 @foreach ($listadoProductos as $producto)
                                     <tr>
                                         <td>{{ $producto->descripcion }}</td>
                                         <td>{{ $producto->precio }}</td>
-                                        <td>{{ $producto->precio }}</td>
+                                        <td>
+                                            <button
+                                                onclick="javascript: document.getElementById('delete-{{ $producto->id }}').submit()"
+                                                class="btn btn-danger">Eliminar</button>
+                                            <a href="{{ route('editar_productos', $producto->id) }}"
+                                                class="btn btn-primary">Editar</a>
+                                            <form id="delete-{{ $producto->id }}"
+                                                action="{{ route('eliminar_productos', $producto->id) }}" method="POST">
+                                                @method('delete')
+                                                @csrf
+                                            </form>
+
+                                        </td>
                                     </tr>
                                 @endforeach
 
@@ -53,6 +58,4 @@
             </div>
         </div>
     </div>
-</body>
-
-</html>
+@endsection

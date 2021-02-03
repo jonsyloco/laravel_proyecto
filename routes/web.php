@@ -31,8 +31,9 @@ Route::get('/obtener_id', [TestController::class, 'verPagina'])->name('pagina_pr
 
 Route::get('/productos', function () {
     //se obtienen todos los productos del modelo
-    $listadoProductos= Producto::orderBy('precio','DESC')->get();   
-    return view('productos.index',compact('listadoProductos'));
+    $listadoProductos = Producto::orderBy('precio', 'DESC')->get();
+
+    return view('productos.index', compact('listadoProductos'));
 })->middleware(['auth'])->name('listado_productos');
 
 Route::get('/productos/crear', function () {
@@ -43,10 +44,40 @@ Route::post('/productos', function (Request $request) {
     $nuevoProducto = new Producto;
     $nuevoProducto->descripcion = $request->input('descripcion');
     $nuevoProducto->precio = $request->input('precio');
-    $nuevoProducto->save();   
+    $nuevoProducto->save();
     //redireccion con mensaje de sesion
-    return redirect()->route('listado_productos')->with('info','Producto creado exitosamente');
+    return redirect()->route('listado_productos')->with('info', 'Producto creado exitosamente');
 })->middleware(['auth'])->name('guardar_productos');
 
 
-require __DIR__.'/auth.php';
+Route::delete('productos/{id}', function ($id) {
+    $producto = Producto::findOrFail($id);
+    $producto->delete();
+    return redirect()->route('listado_productos')->with('info', 'Producto Borrado exitosamente');
+
+})->name('eliminar_productos');
+
+Route::delete('productos/{id}', function ($id) {
+    $producto = Producto::findOrFail($id);
+    $producto->delete();
+    return redirect()->route('listado_productos')->with('info', 'Producto Borrado exitosamente');
+
+})->name('eliminar_productos');
+
+Route::get('productos/{id}/editar', function ($id) {
+    $producto = Producto::findOrFail($id);   
+    return view("productos.editar",compact('producto'));
+
+})->name('editar_productos');
+
+
+Route::put('productos/{id}', function (Request $request ,$id) {
+    $producto = Producto::findOrFail($id);   
+    $producto->descripcion = $request->input('descripcion');
+    $producto->precio = $request->input('precio');        
+    $producto->save();
+    return redirect()->route('listado_productos')->with('info', 'Producto Actualizado exitosamente');
+
+})->name('actualizar_productos');
+
+require __DIR__ . '/auth.php';
